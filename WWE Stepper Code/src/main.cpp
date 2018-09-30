@@ -10,7 +10,7 @@ class Stepper {
 private:
     InterruptIn endStop;
     DigitalOut dirPin;      // stepper direction pin
-    DigitalOut stepPin;     // stepper atep pin
+    DigitalOut stepPin;     // stepper atep pinh
     bool direction;     // direction (0-1)
     bool on;            // true-motor on, false-motor off
     unsigned int pulseCount;        // no of pulses
