@@ -35,7 +35,7 @@ public:
         stepMode = s;
         delay = p;         // set initial delay
         endStop.mode(PullUp);
-        // endStop.fall( this, &Stepper::stop);
+        endStop.fall( this, &Stepper::stop);
     }
     void pulse(void);       // declare functions
     void run(unsigned int period);
@@ -122,6 +122,7 @@ void Stepper::initialise(void) {
     Stepper::runPulse(4000);
 }
 
+
 int Stepper::getRotation() {
     int rotation = (pulseCount/(stepMode*200));
     return rotation;
@@ -157,7 +158,6 @@ while(bob <= noOfBobbin)  {
      wait(0.1);
   }
   conveyor.toggleOn();
-
   // Plate Translate
   d = 20;
   while (d >= 0) {
