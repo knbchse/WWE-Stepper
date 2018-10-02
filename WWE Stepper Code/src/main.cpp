@@ -33,8 +33,9 @@ public:
         on = false;         // initailally off
         pulseCount = 0;     // reset pulse count
         stepMode = s;
-        delay = p;          // set initial delay
-        endStop.fall( this, &Stepper::stop);
+        delay = p;         // set initial delay
+        endStop.mode(PullUp);
+        // endStop.fall( this, &Stepper::stop);
     }
     void pulse(void);       // declare functions
     void run(unsigned int period);
@@ -63,9 +64,9 @@ void Stepper::run(unsigned int period) {
 }
 
 void Stepper::stop(void) {
+    t.detach();         // turn of ticker
     stepPin = 0;        // turn all pins off
     pulseCount = 0;     // reset pulse count
-    t.detach();         // turn of ticker
     on = false;
 }
 
@@ -137,110 +138,13 @@ int main()
     DigitalIn user_button (USER_BUTTON);
     Stepper plate_translate(PB_14, PB_15, PC_5, 1, 200, 32);       //green a4988
     Stepper plate_rotate(PB_1, PB_2, PC_5, 1, 200, 32);
-    Stepper fly_winder(PB_12, PA_11, PC_12,  1, 200, 16);       // 0-clock, 1-anticlock  //red a4988
+    Stepper fly_winder(PB_12, PA_11, PA_10,  1, 200, 16);       // 0-clock, 1-anticlock  //red a4988
     Stepper conveyor(PC_4, PB_13, PB_7, 1, 200, 32);
 
 
-    // If user input says "Go", then run the following CODE
+fly_winder.initialise();
+plate_translate.initialise();
 
-    // In the occurence of turning 120 degrees
-
-
-
-//==========[TEST CODE SET 1]========================
-//
-//    int d = 400;
-//    while (d >= 100) {
-//        plate_rotate.run(d);
-//        plate_translate.run(d);
-//        fly_winder.run(d);
-//        conveyor.run(d);
-//        d--;
-//        wait(0.003);
-//    }
-//
-//    while (d <= 400) {
-//       plate_rotate.run(d);
-//       plate_translate.run(d);
-//       fly_winder.run(d);
-//       conveyor.run(d);
-//       d++;
-//       wait(0.003);
-//    }
-//
-//    while (d >= 100) {
-//       plate_rotate.run(d);
-//       plate_translate.run(d);
-//       fly_winder.run(d);
-//       conveyor.run(d);
-//       d--;
-//       wait(0.003);
-//    }
-//
-//    while (d <= 400) {
-//       plate_rotate.run(d);
-//       plate_translate.run(d);
-//       fly_winder.run(d);
-//       conveyor.run(d);
-//       d++;
-//       wait(0.003);
-//    }
-// }
-
-
-//==========[END OF TEST CODE SET 1]========================
-
-//==========[TEST CODE SET 2]========================
-// int d = 400;
-//     while (d > 80)  {
-//          // Delay is decreasing because d is initially 400 and going down to 80
-//          fly_winder.run(d);
-//          plate_translate.run(d);
-//          wait(0.001);
-//          // Wait 0.001 before decrementing step (and accelerating)
-//          d--;
-//     }
-//     wait(0.1);
-//     // Stays at delay of 80 (constant speed) for 1 seconds
-//     while (d > 22)  {
-//          fly_winder.run(d);
-//          plate_translate.run(d);
-//          // Decrement from 80 down to 20 every s 1 second (wait(1))
-//          wait(0.1);
-//          d--;
-//          //Still accelerating
-//          }
-//     wait(20);
-//     // Stay at delay=20 (constant speed) for 10 seconds
-//     while (d < 1000)  {
-//          fly_winder.run(d);
-//          plate_translate.run(d);
-//          // Incrementing delay up every 0.1
-//          wait(.001);
-//          // Decelerating because delay (between pulses) is now increasing
-//          d++;
-//      }
-//     return 0;
-// }
-//==========[END OF TEST CODE SET 2]========================
-
-
-//==========[TEST CODE SET 3]========================
-// int d = 300;
-// plate_rotate.run(200);
-// // fly_winder.run(600);
-// while (d >= 100) {
-//    fly_winder.run(d);
-//    d--;
-//    wait(0.003);
-// }
-
-//==========[END OF TEST CODE SET 3]========================
-
-//==========[TEST CODE SET 4]========================
-//Using fly_winder derived class as plate rotate class for example purposes
-//Plate translate class will toggle directions as if to guide the wire onto fly_winder
-//Plate will rotate 120 degrees after specified time, after fly_winder has been wound (e.g. 20 seconds)
 int noOfBobbin = 3;
 int bob = 0;
 while(bob <= noOfBobbin)  {
@@ -328,15 +232,3 @@ while(bob <= noOfBobbin)  {
   // wait(20);
 
 }
-
-
-
-
-
-
-
-// while (d <= 100) {
-//    fly_winder.run(d);
-// }
-
-//==========[END OF TEST CODE SET 4]=======================
