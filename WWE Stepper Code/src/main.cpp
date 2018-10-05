@@ -115,7 +115,7 @@ void Stepper::distance(unsigned int d)  {
 }
 
 void Stepper::initialise(void) {
-    Stepper::run(100);
+    Stepper::run(75);
     while (endStop == 1) {
     }
     Stepper::stop();
@@ -137,7 +137,7 @@ int main()
 
 
     DigitalIn user_button (USER_BUTTON);
-    Stepper plate_translate(PB_14, PB_15, PA_10, 1, 200, 32);       //green a4988
+    Stepper plate_translate(PB_14, PB_15, PA_10, 0, 200, 64);       //green a4988
     Stepper plate_rotate(PB_1, PB_2, PC_5, 1, 200, 32);
     Stepper fly_winder(PB_12, PA_11, PC_5,  1, 200, 16);       // 0-clock, 1-anticlock  //red a4988
     Stepper conveyor(PC_4, PB_13, PB_7, 1, 200, 32);
