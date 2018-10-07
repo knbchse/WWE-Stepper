@@ -144,7 +144,7 @@ int main()
 
 
 // fly_winder.initialise(); // This will be for the hall effect
-plate_translate.initialise();
+// plate_translate.initialise();
 
 int noOfBobbin = 3;
 int bob = 0;
