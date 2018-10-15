@@ -379,6 +379,19 @@ int main()
             while (keyscan(1) != 1)  {
             }
         }
+        else {
+          char str15[] = " Press Reset to ";
+          char str16[] = "    continue    ";
+          lcdCommand(0x01); //-- display clear
+          wait_us(2000); //-- needs a 2msec delay !!
+          lcdCommand(0x06); //-- cursor increments
+          lcdCommand(0x0f); //-- display on, cursor(blinks) on
+          lcdPutString(str15);
+          wait(1);
+          lcdCommand(0xc0);
+          lcdPutString(str16);
+          lcdCommand(0x0c);
+        }
     }
 }
 
@@ -393,6 +406,7 @@ int Interface(char *str, int maxDigits, int minBoundary, int maxBoundary)
      while(1){
          Initialise();
          lcdPutString(str);
+         wait(0.5);
          InterfaceInt = keyscan(maxDigits);
          if(InterfaceInt>=minBoundary){
              if(InterfaceInt<=maxBoundary){
