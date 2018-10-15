@@ -186,10 +186,10 @@ int main()
     int bobbincounter = 0;
     while (bobbincounter < bobbins) {
         Initialise();
-        char str5[] = "   Winding...   ";
+        char str5[] = "  Initialising  ";
         lcdPutString(str5);
         plate_translate.initialise();
-        servolifter.pulsewidth_us(900); //-- 20 ms time period
+        servolifter.pulsewidth_us(850); //-- 20 ms time period
         int d = 35;
         while (d >= 25) {
            plate_translate.run(250);
@@ -212,35 +212,49 @@ int main()
            d--;
            wait(0.1);
         }
-    // plate_translate.toggleDirection();
-    //     d = 4;
-    //     while (d >= 1) {
-    //        plate_translate.run(250);
-    //        d--;
-    //        wait(0.1);
-    //     }
-    //plate_rotate.Rotate();
+
       plate_rotate.runPulse(1);
         plate_translate.initialise();
-        d = 14;
-        ;
+        d = 13;
         while (d >= 1) {
-           plate_translate.run(200);
+           plate_translate.run(460);
            d--;
            wait(0.1);
         }
+        d = 1;
+        while (d >= 1) {
+           Fly.run(1000);
+           d--;
+           wait(0.3);
+        }
+        Fly.toggleOn();
+        plate_translate.toggleOn();
+        char str10[] = "   Press 'A'    ";
+        char str11[] = "  to continue   ";
+        lcdCommand(0x01); //-- display clear
+        wait_us(2000); //-- needs a 2msec delay !!
+        lcdCommand(0x06); //-- cursor increments
+        lcdCommand(0x0f); //-- display on, cursor(blinks) on
+        lcdPutString(str10);
+        wait(1);
+        lcdCommand(0xc0);
+        lcdPutString(str11);
+        lcdCommand(0x0c);
+        while (keyscan(1) != 1)  {
+        }
+        char str12[] = "   Winding...   ";
+        lcdCommand(0x01); //-- display clear
+        wait_us(2000); //-- needs a 2msec delay !!
+        lcdCommand(0x06); //-- cursor increments
+        lcdCommand(0x0c);
+        lcdPutString(str12);
+        lcdCommand(0x0c);
+        lcdCommand(0xc0);
         int coil_count = 0;
         int coil_count2 = 0;
         d = 400;
-        lcdCommand(0xc0);
-        lcdCommand(0x0c); //-- display on, cursor(blinks) off
-        while (d >= 100){
-            if (d >= 250) {
-                plate_translate.run(2300);
-            }
-            else  {
-                plate_translate.run(d*9);
-            }
+        while (d >= 80){
+            plate_translate.run(d*9);
             Fly.run(d);
             d--;
             wait(0.01);
@@ -267,7 +281,7 @@ int main()
                 coil_count2++;
                 while (flyStop == 0) {
                 }
-                if (coil_count%30 == 0)  {
+                if (coil_count%18 == 0)  {
                 plate_translate.toggleDirection();
             }
             }
@@ -294,37 +308,61 @@ int main()
 
         }
         }
+        d = 1;
+        while (d >= 1) {
+           Fly.run(1000);
+           d--;
+           wait(0.3);
+        }
+        Fly.toggleOn();
+        lcdCommand(0x01); //-- display clear
+        wait_us(2000); //-- needs a 2msec delay !!
+        lcdCommand(0x06); //-- cursor increments
+        lcdCommand(0x0f); //-- display on, cursor(blinks) on
+        lcdPutString(str10);
+        wait(1);
+        lcdCommand(0xc0);
+        lcdPutString(str11);
+        lcdCommand(0x0c);
+        while (keyscan(1) != 1)  {
+        }
+        Fly.toggleDirection();
+        d = 1;
+        while (d >= 1) {
+           Fly.run(1000);
+           d--;
+           wait(0.3);
+        }
+        Fly.toggleDirection();
         Fly.toggleOn();
         wait(0.5);
         servocutter.pulsewidth_us(2400); //-- pulse width of 2 ms; 90 degrees
         wait(0.5);
         servocutter.pulsewidth_us(550);//-- pulse width of 1 ms; 0 degrees
         plate_translate.initialise();
-        //plate_rotate.Rotate();
-        d = 7;
-        while (d >= 1) {
-           plate_translate.run(200);
+        d = 16;
+        while (d >= 0) {
+           plate_translate.run(225);
            d--;
            wait(0.1);
         }
+        plate_translate.toggleOn();
+        servolifter.pulsewidth_us(850);//-- pulse width of 1 ms; 0 degrees
         Initialise();
         char str6[] = "    Cutting     ";
         lcdPutString(str6);
         lcdCommand(0x0c); //-- display on, cursor(blinks) off
-
-        servolifter.pulsewidth_us(2400); //-- pulse width of 2 ms; 90 degrees
         wait(1);
-        plate_translate.toggleDirection();
-        d = 4;
-        while (d >= 1) {
-        plate_translate.run(200);
-        d--;
-        wait(0.1);
-        }
-        servolifter.pulsewidth_us(550);//-- pulse width of 1 ms; 0 degrees
+        Initialise();
+        char str13[] = "    Unloading   ";
+        lcdPutString(str13);
+        lcdCommand(0x0c); //-- display on, cursor(blinks) off
+        plate_translate.initialise();
+        servolifter.pulsewidth_us(2400); //-- pulse width of 2 ms; 90 degrees
+
         bobbincounter++;
         if (bobbincounter < bobbins) {
-            char str7[] = " Ready to wind  ";
+            char str7[] = "Press A to wind ";
             char str8[] = "the next bobbin?";
             lcdCommand(0x01); //-- display clear
             wait_us(2000); //-- needs a 2msec delay !!
