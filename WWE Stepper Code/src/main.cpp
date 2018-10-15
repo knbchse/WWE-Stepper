@@ -199,7 +199,7 @@ int main()
         char str5[] = "   Winding...   ";
         lcdPutString(str5);
         plate_translate.initialise();
-        int d = 40;
+        int d = 30;
         while (d >= 1) {
            plate_translate.run(250);
            d--;
