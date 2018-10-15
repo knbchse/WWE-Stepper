@@ -103,7 +103,7 @@ void Stepper::toggleOn(void) {
 void Stepper::runPulse(unsigned int n) {
     pulseCount = 0;
     Stepper::run(0);
-    while (pulseCount <= n*stepMode*200) {
+    while (pulseCount <= n*stepMode*50) {
         wait(.01);
     }
     Stepper::stop();
@@ -143,16 +143,6 @@ void Stepper::initialise(void) {
     Stepper::stop();
 }
 
-void Stepper::Rotate(void)  {
-    int h = 800;
-    while (h >= 1)  {
-        Stepper::run(2000);
-        wait_ms(1);
-        h--;
-    }
-    Stepper::stop();
-}
-
 void Stepper::setDirection(int d) {
     dirPin= d;
 }
@@ -164,21 +154,21 @@ int main()
     DigitalIn user_button (USER_BUTTON);
     DigitalIn flyStop (PC_8);
     Stepper plate_translate(PC_4, PB_13, PA_10, 0, 200, 32); // 3
-    Stepper plate_rotate(PB_1, PB_2, PC_12, 1, 200, 8); // 2
+    Stepper plate_rotate(PB_1, PB_2, PC_12, 1, 200, 64); // 2
     Stepper Fly(PB_12, PA_11, PC_12,  0, 200, 32);       // 1
     Stepper conveyor(PB_14, PB_15, PC_12, 1, 200, 32);     // 4
     flyStop.mode(PullUp);
     servocutter.period_us(20000); //-- 20 ms time period
     servolifter.period_us(20000); //-- 20 ms time period
     Initialise();
-    servolifter.pulsewidth_us(550);//-- pulse width of 1 ms; 0 degrees
-    servocutter.pulsewidth_us(550);//-- pulse width of 1 ms; 0 degrees
+    servolifter.pulsewidth_us(2350);//-- pulse width of 1 ms; 0 degrees
+    servocutter.pulsewidth_us(2350);//-- pulse width of 1 ms; 0 degrees
     char str1[] = "Number of coils:";
     int numberOfCoils = Interface(str1, 3, 100, 500);
     char str3[] = "Number of bobbin";
     int bobbins = Interface(str3, 2, 1, 99);
     char str2[] =  " Gauge of wire :";
-    char defaultstr[] = "  Default : 27  ";
+    char defaultstr[] = "  Default : 25  ";
     lcdCommand(0x01); //-- display clear
     wait_us(2000); //-- needs a 2msec delay !!
     lcdCommand(0x06); //-- cursor increments
@@ -199,31 +189,38 @@ int main()
         char str5[] = "   Winding...   ";
         lcdPutString(str5);
         plate_translate.initialise();
-        int d = 30;
-        while (d >= 1) {
+        servolifter.pulsewidth_us(900); //-- 20 ms time period
+        int d = 35;
+        while (d >= 25) {
            plate_translate.run(250);
+           d--;
+           wait(0.1);
+        }
+        while (d >= 0) {
+           plate_translate.run(800);
            d--;
            wait(0.1);
         }
 
         plate_translate.stop();
+        servolifter.pulsewidth_us(2350); //-- 20 ms time period
         wait(1);
         plate_translate.toggleDirection();
         d = 15;
         while (d >= 1) {
-           plate_translate.run(250);
+           plate_translate.run(400);
            d--;
            wait(0.1);
         }
-    plate_translate.toggleDirection();
-        d = 4;
-        while (d >= 1) {
-           plate_translate.run(250);
-           d--;
-           wait(0.1);
-        }
-    plate_rotate.Rotate();
-
+    // plate_translate.toggleDirection();
+    //     d = 4;
+    //     while (d >= 1) {
+    //        plate_translate.run(250);
+    //        d--;
+    //        wait(0.1);
+    //     }
+    //plate_rotate.Rotate();
+      plate_rotate.runPulse(1);
         plate_translate.initialise();
         d = 14;
         ;
