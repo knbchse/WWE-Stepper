@@ -1,5 +1,5 @@
-//TESTING
-// WWE - Stepper Code
+// Wire Winding Enterprises (WWE) main code
+// Author: Hamish Simmonds (The man from Levin)
 
 #include "mbed.h"
 #include "math.h"
@@ -146,6 +146,11 @@ void Stepper::initialise(void) {
 void Stepper::setDirection(int d) {
     dirPin= d;
 }
+
+//===[End of Stepper Class]===
+
+
+//===[Start of main code]===
 int main()
 {
 
@@ -395,9 +400,10 @@ int main()
     }
 }
 
+//===[End of main code]===
 
 
-
+//===[Start of LCD code]===
 int Interface(char *str, int maxDigits, int minBoundary, int maxBoundary)
 {
      int InterfaceInt;
