@@ -259,7 +259,7 @@ int main()
         int coil_count2 = 0;
         d = 400;
         while (d >= 80){
-            plate_translate.run(d*9);
+            plate_translate.run(d*10);
             Fly.run(d);
             d--;
             wait(0.01);
@@ -286,7 +286,7 @@ int main()
                 coil_count2++;
                 while (flyStop == 0) {
                 }
-                if (coil_count%18 == 0)  {
+                if (coil_count%22 == 0)  {
                 plate_translate.toggleDirection();
             }
             }
@@ -300,6 +300,7 @@ int main()
             }
 
         }
+        plate_translate.setDirection(0);
         lcdPutChar('-');
         lcdCommand(0x0c); //-- display on, cursor(blinks) off
         Fly.run(1000);
@@ -341,11 +342,16 @@ int main()
         Fly.toggleDirection();
         Fly.toggleOn();
         wait(0.5);
-        servocutter.pulsewidth_us(2400); //-- pulse width of 2 ms; 90 degrees
-        wait(0.5);
-        servocutter.pulsewidth_us(550);//-- pulse width of 1 ms; 0 degrees
         plate_translate.initialise();
-        d = 16;
+        d = 8;
+        while (d >= 0) {
+           plate_translate.run(225);
+           d--;
+           wait(0.1);
+        }
+        plate_translate.toggleOn();
+        wait(3);
+        d = 7;
         while (d >= 0) {
            plate_translate.run(225);
            d--;
